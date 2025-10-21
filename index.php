@@ -19,6 +19,8 @@ $role = $_SESSION['role'] ?? 'user';
     <p>Vous êtes connecté.</p>
     <?php if ($role === 'admin'): ?>
       <p><a href="admin_create.php">Créer un nouvel utilisateur</a></p>
+      <p><a href="admin_users.php">Gérer utilisateurs</a></p>
+      <p><a href="admin_logs.php">Voir journal admin</a></p>
     <?php endif; ?>
     <p><a href="logout.php">Se déconnecter</a></p>
   </div>
