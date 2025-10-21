@@ -1,48 +1,65 @@
 <?php
-session_start();
+require_once __DIR__.'/config.php';
 
-$servername = "192.168.1.55";
-$dbuser = "root";
-$dbpass = "V@%y!2Nvqx&2t7"; // ton mot de passe MySQL si nécessaire
-$dbname = "brinks";
-
-$conn = new mysqli($servername, $dbuser, $dbpass, $dbname);
-if ($conn->connect_error) { die("Connection failed: " . $conn->connect_error); }
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $matricule = $_POST['matricule'] ?? '';
-    $pass = $_POST['password'] ?? '';
-
-    $stmt = $conn->prepare("SELECT id, password, role FROM users WHERE matricule = ?");
-    $stmt->bind_param("s", $matricule);
-    $stmt->execute();
-    $stmt->store_result();
-    $stmt->bind_result($id, $hashed_password, $role);
-    $stmt->fetch();
-
-    if ($stmt->num_rows > 0 && password_verify($pass, $hashed_password)) {
-        // Regénérer la session id pour éviter fixation
-        session_regenerate_id(true);
-        $_SESSION['user_id'] = $id;
-        $_SESSION['role'] = $role;
-        header("Location: index.php");
-        exit();
-    } else {
-        $error = "Matricule ou mot de passe incorrect.";
+function db_connect(){
+    $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+    if ($conn->connect_error) {
+        // message lisible pour admin ; en prod envisager log + message générique
+        die("Erreur connexion BDD: " . $conn->connect_error);
     }
-    $stmt->close();
+    $conn->set_charset('utf8mb4');
+    return $conn;
 }
-$conn->close();
+
+$error = '';
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $matricule = trim($_POST['matricule'] ?? '');
+    $password = $_POST['password'] ?? '';
+
+    if ($matricule === '' || $password === '') {
+        $error = "Matricule et mot de passe requis.";
+    } else {
+        $conn = db_connect();
+        $stmt = $conn->prepare("SELECT id, password, role FROM users WHERE matricule = ? LIMIT 1");
+        $stmt->bind_param('s', $matricule);
+        $stmt->execute();
+        $stmt->store_result();
+        $stmt->bind_result($id, $hash, $role);
+        if ($stmt->num_rows === 1) {
+            $stmt->fetch();
+            if (password_verify($password, $hash)) {
+                session_regenerate_id(true);
+                $_SESSION['user_id'] = $id;
+                $_SESSION['role'] = $role;
+                header('Location: index.php');
+                exit();
+            } else {
+                $error = "Matricule ou mot de passe incorrect.";
+            }
+        } else {
+            $error = "Matricule ou mot de passe incorrect.";
+        }
+        $stmt->close();
+        $conn->close();
+    }
+}
 ?>
 <!doctype html>
-<html>
-<head><meta charset="utf-8"><title>Connexion</title></head>
-<body>
-<?php if(!empty($error)) echo "<p style='color:red;'>$error</p>"; ?>
-<form method="POST" autocomplete="off">
-    <label>Matricule: <input type="text" name="matricule" required></label><br>
-    <label>Mot de passe: <input type="password" name="password" required></label><br>
-    <button type="submit">Se connecter</button>
-</form>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Connexion - projet_brinks</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="center">
+  <div class="card">
+    <h1>Connexion</h1>
+    <?php if($error): ?><p class="err"><?=htmlspecialchars($error)?></p><?php endif; ?>
+    <form method="post" autocomplete="off">
+      <label>Matricule<br><input type="text" name="matricule" required></label><br>
+      <label>Mot de passe<br><input type="password" name="password" required></label><br>
+      <button type="submit">Se connecter</button>
+    </form>
+  </div>
 </body>
 </html>
