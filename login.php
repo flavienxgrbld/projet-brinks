@@ -1,9 +1,9 @@
 <?php
 session_start();
 
-$servername = "localhost";
+$servername = "192.168.1.55";
 $dbuser = "root";
-$dbpass = ""; // ton mot de passe MySQL si nécessaire
+$dbpass = "V@%y!2Nvqx&2t7"; // ton mot de passe MySQL si nécessaire
 $dbname = "brinks";
 
 $conn = new mysqli($servername, $dbuser, $dbpass, $dbname);
