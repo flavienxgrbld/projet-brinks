@@ -37,10 +37,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     if (isset($_POST['stop'])) {
         if ($current) {
-            $stmt = $conn->prepare("UPDATE work_time SET end_time = NOW(), duration_minutes = TIMESTAMPDIFF(MINUTE, start_time, NOW()) WHERE id=?");
+            $stmt = $conn->prepare("UPDATE work_time SET end_time=NOW() WHERE id=?");
             $stmt->bind_param('i', $current['id']);
             $stmt->execute();
             $message = "Pointage de sortie enregistré à " . date('H:i:s');
+
+            // 🔄 Actualiser l’état après la sortie
+            $stmt = $conn->prepare("SELECT id, start_time FROM work_time WHERE user_id=? AND end_time IS NULL ORDER BY start_time DESC LIMIT 1");
+            $stmt->bind_param('i', $user_id);
+            $stmt->execute();
+            $current = $stmt->get_result()->fetch_assoc();
         } else {
             $message = "⚠️ Vous n'êtes pas actuellement en service.";
         }
