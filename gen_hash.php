@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('Europe/Paris');
 // gen_hash.php
 if (PHP_SAPI !== 'cli') {
     echo "Ce script est prévu pour CLI.\n";
