@@ -1,10 +1,12 @@
 <?php
 date_default_timezone_set('Europe/Paris');
 require_once __DIR__ . '/config.php';
+
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit();
 }
+
 $role = $_SESSION['role'] ?? 'user';
 ?>
 <!doctype html>
@@ -17,7 +19,7 @@ $role = $_SESSION['role'] ?? 'user';
 <body class="center">
   <div class="card">
     <!-- Sélecteur de thème -->
-    <div style="text-align: right; margin-bottom: 1rem;">
+    <div class="theme-selector" style="text-align: right; margin-bottom: 1rem;">
       <button type="button" onclick="setTheme('')">Clair</button>
       <button type="button" onclick="setTheme('theme-dark')">Sombre</button>
       <button type="button" onclick="setTheme('theme-modern')">Moderne</button>
@@ -27,10 +29,12 @@ $role = $_SESSION['role'] ?? 'user';
     <p>Vous êtes connecté.</p>
 
     <?php if ($role === 'admin'): ?>
-      <p><a href="admin_create.php">Créer un nouvel utilisateur</a></p>
-      <p><a href="admin_users.php">Gérer utilisateurs</a></p>
-      <p><a href="admin_logs.php">Voir journal admin</a></p>
-      <p><a href="admin_temps.php">Gestion du temps</a></p>
+      <div class="admin-links">
+        <p><a href="admin_create.php">Créer un nouvel utilisateur</a></p>
+        <p><a href="admin_users.php">Gérer utilisateurs</a></p>
+        <p><a href="admin_logs.php">Voir journal admin</a></p>
+        <p><a href="admin_temps.php">Gestion du temps</a></p>
+      </div>
     <?php endif; ?>
 
     <p><a href="mes_heures.php">Mes heures</a></p>
@@ -53,4 +57,3 @@ $role = $_SESSION['role'] ?? 'user';
   </script>
 </body>
 </html>
-
