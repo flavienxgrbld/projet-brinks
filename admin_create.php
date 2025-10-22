@@ -50,14 +50,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body class="center">
   <div class="card">
+    <!-- Sélecteur de thème -->
+    <div style="text-align: right; margin-bottom: 1rem;">
+      <button type="button" onclick="setTheme('')">Clair</button>
+      <button type="button" onclick="setTheme('theme-dark')">Sombre</button>
+      <button type="button" onclick="setTheme('theme-modern')">Moderne</button>
+    </div>
+
     <h1>Créer un utilisateur</h1>
+
     <?php if($success): ?><p class="ok"><?=htmlspecialchars($success)?></p><?php endif; ?>
     <?php if($error): ?><p class="err"><?=htmlspecialchars($error)?></p><?php endif; ?>
 
     <?php if($revealed_password): ?>
       <p><strong>Mot de passe généré (copier UNE SEULE FOIS) :</strong></p>
       <div class="reveal"><?=htmlspecialchars($revealed_password)?></div>
-      <p class="small">Ce mot de passe n'est **pas** stocké en clair. Demandez à l'utilisateur de le changer dès la première connexion.</p>
+      <p class="small">Ce mot de passe n'est <strong>pas</strong> stocké en clair. Demandez à l'utilisateur de le changer dès la première connexion.</p>
     <?php endif; ?>
 
     <form method="post" autocomplete="off">
@@ -70,7 +78,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </label><br>
       <button type="submit">Créer</button>
     </form>
+
     <p><a href="index.php">Retour</a></p>
   </div>
+
+  <script>
+    // Appliquer le thème stocké au chargement
+    document.addEventListener('DOMContentLoaded', function() {
+      const theme = localStorage.getItem('theme') || '';
+      if (theme) document.body.classList.add(theme);
+    });
+
+    // Fonction pour changer le thème
+    function setTheme(themeClass) {
+      document.body.classList.remove('theme-dark', 'theme-modern');
+      if (themeClass) document.body.classList.add(themeClass);
+      localStorage.setItem('theme', themeClass);
+    }
+  </script>
 </body>
 </html>

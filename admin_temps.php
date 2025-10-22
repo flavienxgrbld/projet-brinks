@@ -41,35 +41,57 @@ $conn->close();
 </head>
 <body class="center">
 <div class="card">
-<h1>Gestion du temps de travail</h1>
+  <!-- Sélecteur de thème -->
+  <div style="text-align: right; margin-bottom: 1rem;">
+    <button type="button" onclick="setTheme('')">Clair</button>
+    <button type="button" onclick="setTheme('theme-dark')">Sombre</button>
+    <button type="button" onclick="setTheme('theme-modern')">Moderne</button>
+  </div>
 
-<h2>Employés actuellement en service</h2>
-<table border="1" cellpadding="6">
-<tr><th>Matricule</th><th>Début de service</th><th>Durée actuelle</th></tr>
-<?php foreach($in_service as $s): 
-$start = strtotime($s['start_time']);
-$duration = floor((time() - $start)/60);
-?>
-<tr>
-<td><?= htmlspecialchars($s['matricule']) ?></td>
-<td><?= date('H:i', $start) ?></td>
-<td><?= floor($duration/60).'h '.($duration%60).'m' ?></td>
-</tr>
-<?php endforeach; ?>
-</table>
+  <h1>Gestion du temps de travail</h1>
 
-<h2>Heures totales par utilisateur (semaine en cours)</h2>
-<table border="1" cellpadding="6">
-<tr><th>Matricule</th><th>Total heures</th></tr>
-<?php foreach($weekly as $w): ?>
-<tr>
-<td><?= htmlspecialchars($w['matricule']) ?></td>
-<td><?= $w['total_heures'] ?? 0 ?></td>
-</tr>
-<?php endforeach; ?>
-</table>
+  <h2>Employés actuellement en service</h2>
+  <table border="1" cellpadding="6">
+    <tr><th>Matricule</th><th>Début de service</th><th>Durée actuelle</th></tr>
+    <?php foreach($in_service as $s): 
+      $start = strtotime($s['start_time']);
+      $duration = floor((time() - $start)/60);
+    ?>
+    <tr>
+      <td><?= htmlspecialchars($s['matricule']) ?></td>
+      <td><?= date('H:i', $start) ?></td>
+      <td><?= floor($duration/60).'h '.($duration%60).'m' ?></td>
+    </tr>
+    <?php endforeach; ?>
+  </table>
 
-<p><a href="index.php">Retour</a></p>
+  <h2>Heures totales par utilisateur (semaine en cours)</h2>
+  <table border="1" cellpadding="6">
+    <tr><th>Matricule</th><th>Total heures</th></tr>
+    <?php foreach($weekly as $w): ?>
+    <tr>
+      <td><?= htmlspecialchars($w['matricule']) ?></td>
+      <td><?= $w['total_heures'] ?? 0 ?></td>
+    </tr>
+    <?php endforeach; ?>
+  </table>
+
+  <p><a href="index.php">Retour</a></p>
 </div>
+
+<script>
+  // Appliquer le thème stocké au chargement
+  document.addEventListener('DOMContentLoaded', function() {
+    const theme = localStorage.getItem('theme') || '';
+    if (theme) document.body.classList.add(theme);
+  });
+
+  // Fonction pour changer le thème
+  function setTheme(themeClass) {
+    document.body.classList.remove('theme-dark', 'theme-modern');
+    if (themeClass) document.body.classList.add(themeClass);
+    localStorage.setItem('theme', themeClass);
+  }
+</script>
 </body>
 </html>
