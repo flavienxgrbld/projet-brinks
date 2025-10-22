@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <title>Connexion - projet_brinks</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body class="center">
+<body class="center theme-dark">
   <div class="card">
     <h1>Connexion</h1>
     <?php if($error): ?><p class="err"><?=htmlspecialchars($error)?></p><?php endif; ?>
@@ -62,6 +62,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <button type="submit">Se connecter</button>
     </form>
   </div>
-<body class="theme-dark">
 </body>
 </html>
