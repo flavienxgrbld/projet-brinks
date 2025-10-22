@@ -25,6 +25,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->bind_param('i', $user_id);
             $stmt->execute();
             $message = "Pointage d'entrée enregistré à " . date('H:i:s');
+
+        // 🔄 Actualiser l’état actuel
+            $stmt = $conn->prepare("SELECT id, start_time FROM work_time WHERE user_id=? AND end_time IS NULL ORDER BY start_time DESC LIMIT 1");
+            $stmt->bind_param('i', $user_id);
+            $stmt->execute();
+            $current = $stmt->get_result()->fetch_assoc();
         } else {
             $message = "⚠️ Vous êtes déjà en service depuis " . date('H:i', strtotime($current['start_time']));
         }
