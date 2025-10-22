@@ -69,7 +69,7 @@ $conn->close();
 <head>
 <meta charset="utf-8">
 <title>Mes heures de travail</title>
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="style.css">
 </head>
 <body class="center">
 <div class="card">
