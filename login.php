@@ -62,5 +62,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <button type="submit">Se connecter</button>
     </form>
   </div>
+<body class="theme-dark">
 </body>
 </html>
