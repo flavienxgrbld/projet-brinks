@@ -54,13 +54,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body class="center theme-dark">
   <div class="card">
+    <!-- Sélecteur de thème -->
+    <div style="text-align: right; margin-bottom: 1rem;">
+      <button type="button" onclick="setTheme('')">Clair</button>
+      <button type="button" onclick="setTheme('theme-dark')">Sombre</button>
+      <button type="button" onclick="setTheme('theme-modern')">Moderne</button>
+    </div>
+
     <h1>Connexion</h1>
     <?php if($error): ?><p class="err"><?=htmlspecialchars($error)?></p><?php endif; ?>
+    
     <form method="post" autocomplete="off">
       <label>Matricule<br><input type="text" name="matricule" required></label><br>
       <label>Mot de passe<br><input type="password" name="password" required></label><br>
       <button type="submit">Se connecter</button>
     </form>
   </div>
+
+  <script>
+    // Appliquer le thème stocké au chargement
+    document.addEventListener('DOMContentLoaded', function() {
+      const theme = localStorage.getItem('theme') || '';
+      if (theme) document.body.classList.add(theme);
+    });
+
+    // Fonction pour changer le thème
+    function setTheme(themeClass) {
+      document.body.classList.remove('theme-dark', 'theme-modern');
+      if (themeClass) document.body.classList.add(themeClass);
+      localStorage.setItem('theme', themeClass);
+    }
+  </script>
 </body>
 </html>
