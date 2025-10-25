@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div style="text-align: right; margin-bottom: 1rem;">
       <button type="button" onclick="setTheme('')">Clair</button>
       <button type="button" onclick="setTheme('theme-dark')">Sombre</button>
-      <button type="button" onclick="setTheme('theme-modern')">Moderne</button>
+      <button type="button" onclick="setTheme('theme-modern')">test</button>
     </div>
 
     <h1>Connexion</h1>
