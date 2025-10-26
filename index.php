@@ -22,7 +22,7 @@ $role = $_SESSION['role'] ?? 'user';
     <div class="theme-selector" style="text-align: right; margin-bottom: 1rem;">
       <button type="button" onclick="setTheme('')">Clair</button>
       <button type="button" onclick="setTheme('theme-dark')">Sombre</button>
-      <button type="button" onclick="setTheme('theme-modern')">Moderne</button>
+      <button type="button" onclick="setTheme('theme-modern')">test-n8n</button>
     </div>
 
     <h1>Bienvenue</h1>
