@@ -1,7 +1,7 @@
 <?php
-date_default_timezone_set('Europe/Paris');
-require_once __DIR__.'/config.php';
 
+require_once __DIR__.'/config.php';
+date_default_timezone_set('Europe/Paris');
 function db_connect(){
     $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
     if ($conn->connect_error) {
